@@ -4,6 +4,9 @@ develop:
 install:
 	npm ci
 
+run:
+	npm start
+
 build:
 	NODE_ENV=production npx webpack
 
