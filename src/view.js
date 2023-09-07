@@ -1,22 +1,11 @@
-import onChange from 'on-change';
-
-const state = {
-  queryForm: {
-    state: 'valid',
-    input: '',
-    errors: []
-  },
-  feedlist: '',
-}
-
-const watchedState = onChange(state, (path, value) => {
-  console.log(path, value)
-  // if (path === 'registrationForm.state') {
-  //   if (value === 'invalid') {
-  //     // Отрисовка ошибок, хранящихся где-то в состоянии
-  //     // watchedState.registrationForm.errors
-  //   }
-  // }
-});
-export { state, watchedState }
-
+export default (state, container) => {
+  const inputField = container.input;
+  const inputFeedback = container.feedback;
+  if (state.form.valid === false) {
+    container.input.classList.add('is-invalid');
+    inputFeedback.textContent = state.form.error;
+  } else {
+    inputField.classList.remove('is-invalid');
+    inputFeedback.textContent = '';
+  }
+};
