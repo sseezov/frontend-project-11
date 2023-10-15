@@ -1,6 +1,25 @@
 import * as yup from 'yup';
 import onChange from 'on-change';
 import render from './view.js';
+import i18next from 'i18next';
+import { setLocale } from 'yup';
+
+i18next.init({
+  debug: true,
+  lng: 'ru',
+  resources: {
+    ru: {
+      translation: {
+        urlShouldBeValid: 'Ссылка должна быть валидным URL'
+      }
+    },
+    en: {
+      translation: {
+        urlShouldBeValid: 'The link must be a valid URL'
+      }
+    }
+  }
+})
 
 const validation = (url, state) => {
   const stateForm = state.form;
@@ -12,7 +31,7 @@ const validation = (url, state) => {
     })
     .catch(() => {
       stateForm.valid = false;
-      stateForm.error = 'Ссылка должна быть валидным URL';
+      stateForm.error = i18next.t('urlShouldBeValid', { lng: 'en' });
     });
 };
 
