@@ -28,14 +28,7 @@ export default () => {
     debug: false,
     resources,
   }).then(() => {
-    yup.setLocale({
-      mixed: {
-        default: '1111',
-      },
-      string: {
-        url: '3333',
-      }
-    });
+    yup.setLocale(locale);
 
     const baseUrlSchema = yup.string().url().required();
 

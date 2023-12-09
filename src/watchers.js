@@ -13,7 +13,7 @@ export default (elements, initState, i18next) => {
     }
   };
 
-  const watchedState = onChange(initState, ()=>handleForm(initState));
+  const watchedState = onChange(initState, () => handleForm(initState));
 
   return watchedState;
 };
