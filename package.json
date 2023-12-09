@@ -2,7 +2,7 @@
   "name": "@hexlet-code",
   "version": "1.0.0",
   "description": "[![Actions Status](https://github.com/sseezov/frontend-project-11/workflows/hexlet-check/badge.svg)](https://github.com/sseezov/frontend-project-11/actions)",
-  "main": "index.js",
+  "main": "src/index.js",
   "type": "module",
   "scripts": {
     "test": "npx jest",
@@ -36,6 +36,7 @@
   "dependencies": {
     "ajv": "^8.12.0",
     "bootstrap": "^5.3.1",
+    "i18next": "^23.7.8",
     "on-change": "^4.0.2",
     "yup": "^1.2.0"
   }
