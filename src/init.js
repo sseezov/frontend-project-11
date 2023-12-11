@@ -3,6 +3,21 @@ import resources from './locales/resources.js';
 import * as yup from 'yup';
 import locale from './locales/yupLocale.js';
 import watch from './watchers.js';
+import axios from 'axios';
+import parse from './rss.js';
+
+const loadRss = (url) => {
+  const urlWithProxy = addProxy(url);
+  return axios.get(urlWithProxy, { timeout: 1000 })
+}
+
+const addProxy = (url) => {
+  const urlWithProxy = new URL('/get', 'https://allorigins.hexlet.app');
+  urlWithProxy.searchParams.set('url', url);
+  urlWithProxy.searchParams.set('disableCache', 'true');
+  return urlWithProxy.toString();
+};
+
 
 export default () => {
 
@@ -54,6 +69,8 @@ export default () => {
               valid: true,
               error: null,
             };
+            console.log(url)
+            loadRss(url).then((data)=>console.log(data));
           } else {
             watchedState.form = {
               ...watchedState.form,
