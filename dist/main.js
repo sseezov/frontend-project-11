@@ -1,1 +1,0 @@
-(()=>{"use strict";var e=function(){return console.log(1)};document.querySelector("body").addEventListener("click",e),document.querySelector("html").addEventListener("click",e)})();

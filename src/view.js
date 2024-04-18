@@ -1,5 +1,7 @@
 import onChange from 'on-change';
 import * as yup from 'yup';
+import i18n from 'i18next';
+import resources from '../locales/index.js';
 
 export default () => {
   const state = {
@@ -11,7 +13,14 @@ export default () => {
     feed: {
       urls: [],
     },
+    language: 'en',
   };
+
+  const i18nextInstance = i18n.createInstance();
+  i18nextInstance.init({
+    lng: state.language,
+    resources,
+  });
 
   const schema = yup.string().url().required();
 
@@ -19,7 +28,19 @@ export default () => {
     form: document.querySelector('form'),
     input: document.querySelector('#url-input'),
     feedback: document.querySelector('.feedback'),
+    textNodes: {
+      heading: document.querySelector('h1[class="display-3 mb-0"]'),
+      subheading: document.querySelector('p[class="lead"]'),
+      RSSLink: document.querySelector('label[for="url-input"]'),
+    },
   };
+
+  const loadTranslation = () => {
+    Object.keys(elements.textNodes)
+      .forEach((node) => { elements.textNodes[node].textContent = i18nextInstance.t(node); });
+  };
+
+  loadTranslation();
 
   const watchedState = onChange(state, (path, value) => {
     switch (path) {
