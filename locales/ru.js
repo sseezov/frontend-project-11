@@ -5,12 +5,13 @@ export default {
     RSSLink: 'Ссылка RSS',
     add: 'Добавить',
     example: 'Пример: https://lorem-rss.hexlet.app/feed',
+    readAllBtn: 'Читать полностью',
+    closeModalBtn: 'Закрыть',
+    addBtn: 'Добавить',
     errors: {
-      validation: {
-        required: 'Это обязательное поле',
-        invalid: 'Ссылка должна быть валидным URL',
-        alreadyExists: 'RSS уже существует',
-      },
+      required: 'Это обязательное поле',
+      invalid: 'Ссылка должна быть валидным URL',
+      alreadyExists: 'RSS уже существует',
     },
   },
 };
