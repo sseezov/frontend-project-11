@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import onChange from 'on-change';
 
-export default (elements, state) => {
+export default (elements, state, i18nInstance) => {
   const watchedState = onChange(state, (path, value) => {
     switch (path) {
       case 'form.error':
@@ -12,7 +12,7 @@ export default (elements, state) => {
           elements.feedback.classList.add('text-danger');
         } else {
           elements.input.classList.remove('is-invalid');
-          elements.feedback.textContent = 'RSS успешно загружен';
+          elements.feedback.textContent = i18nInstance.t('successfullyLoaded');
           elements.feedback.classList.add('text-success');
           elements.feedback.classList.remove('text-danger');
         }

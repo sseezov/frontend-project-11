@@ -50,7 +50,7 @@ export default () => {
 
   loadTranslation();
 
-  const watchedState = watch(elements, state);
+  const watchedState = watch(elements, state, i18nextInstance);
 
   elements.form.addEventListener('submit', (e) => {
     e.preventDefault();
