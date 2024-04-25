@@ -1,4 +1,4 @@
 import './index.scss';
-import render from './view.js';
+import render from './init.js';
 
 render();
