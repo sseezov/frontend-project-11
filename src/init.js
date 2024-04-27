@@ -3,6 +3,7 @@ import i18n from 'i18next';
 import resources from '../locales/index.js';
 import locale from '../locales/yupLocale.js';
 import watch from './watchers.js';
+import axios from 'axios';
 
 export default () => {
   const state = {
@@ -52,6 +53,20 @@ export default () => {
 
   const watchedState = watch(elements, state, i18nextInstance);
 
+  const getRss = (link) => {
+    const parser = new DOMParser();
+    fetch(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(link)}`)
+      .then(response => {
+        if (response.ok) return response.json();
+        throw new Error('Network response was not ok.');
+      })
+      .then((data) => {
+        const parsedData = parser.parseFromString(data.contents, 'application/xml');
+        const items = parsedData.querySelectorAll('item');
+        items.forEach((item) => console.log(item.querySelector('title').textContent));
+      });
+  };
+
   elements.form.addEventListener('submit', (e) => {
     e.preventDefault();
     watchedState.form.value = elements.input.value;
@@ -62,6 +77,7 @@ export default () => {
         watchedState.feed.urls.add(url);
         elements.form.reset();
         elements.input.focus();
+        getRss(watchedState.form.value);
       })
       .catch((err) => {
         const messages = err.errors.map((error) => i18nextInstance.t(`errors.${error.key}`));
