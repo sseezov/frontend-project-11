@@ -8,10 +8,13 @@ export default {
     closeModalBtn: 'Close',
     successfullyLoaded: 'RSS has been loaded',
     addBtn: 'Add',
+    posts: 'Posts',
+    preview: 'Preview',
     errors: {
       required: 'This is a required field',
       invalid: 'Must be valid URL',
       alreadyExists: 'RSS already exists',
+      noData: 'No valid RSS in the resource',
     },
   },
 };

@@ -9,10 +9,13 @@ export default {
     closeModalBtn: 'Закрыть',
     addBtn: 'Добавить',
     successfullyLoaded: 'RSS был успешно загружен',
+    posts: 'Посты',
+    preview: 'Просмотр',
     errors: {
       required: 'Это обязательное поле',
       invalid: 'Ссылка должна быть валидным URL',
       alreadyExists: 'RSS уже существует',
+      noData: 'Ресурс не содержит валидный RSS',
     },
   },
 };
