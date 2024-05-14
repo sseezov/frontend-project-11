@@ -9,6 +9,7 @@ export default {
     successfullyLoaded: 'RSS has been loaded',
     addBtn: 'Add',
     posts: 'Posts',
+    feeds: 'Feeds',
     preview: 'Preview',
     errors: {
       required: 'This is a required field',

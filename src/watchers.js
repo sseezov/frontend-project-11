@@ -1,8 +1,10 @@
 /* eslint-disable no-param-reassign */
 import onChange from 'on-change';
+import { renderFeeds } from './rss.js';
 
 export default (elements, state, i18nInstance) => {
   const watchedState = onChange(state, (path, value) => {
+    console.log(77, watchedState);
     switch (path) {
       case 'form.error':
         if (watchedState.form.error) {
@@ -16,6 +18,10 @@ export default (elements, state, i18nInstance) => {
           elements.feedback.classList.add('text-success');
           elements.feedback.classList.remove('text-danger');
         }
+        break;
+      case 'feeds':
+        console.log(44, watchedState.feeds);
+        renderFeeds(watchedState, elements, i18nInstance);
         break;
       default:
         console.log(`invalid data: \n path: ${path} value: ${value}`);

@@ -10,6 +10,7 @@ export default {
     addBtn: 'Добавить',
     successfullyLoaded: 'RSS был успешно загружен',
     posts: 'Посты',
+    feeds: 'Фиды',
     preview: 'Просмотр',
     errors: {
       required: 'Это обязательное поле',
