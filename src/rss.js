@@ -1,4 +1,4 @@
-const pushFeedsInfo = (data, watchedState) => {
+const parseRss = (data) => {
   const parser = new DOMParser();
   const parsedData = parser.parseFromString(data.contents, 'application/xml');
   const posts = Array.from(parsedData.querySelectorAll('item')).map((post) => ({
@@ -7,8 +7,7 @@ const pushFeedsInfo = (data, watchedState) => {
   }));
   const title = parsedData.querySelector('title').textContent;
   const description = parsedData.querySelector('description').textContent;
-  const feed = { title, description, posts };
-  watchedState.feeds.push(feed);
+  return { title, description, posts };
 };
 
 const createCard = (i18nextInstance, type) => {
@@ -25,6 +24,8 @@ const createCard = (i18nextInstance, type) => {
 };
 
 export const renderFeeds = (watchedState, elements, i18nextInstance) => {
+  elements.posts.innerHTML = '';
+  elements.feeds.innerHTML = '';
   const postsCard = createCard(i18nextInstance, 'posts');
   const feedsCard = createCard(i18nextInstance, 'feeds');
   const postsUl = document.createElement('ul');
@@ -69,7 +70,7 @@ export default (link, i18nextInstance, watchedState) => {
     })
     .then((data) => {
       if (data.status.http_code === 404) throw new Error('noData');
-      pushFeedsInfo(data, watchedState);
+      watchedState.feeds.push(parseRss(data));
     })
     .catch((err) => {
       watchedState.form.error = i18nextInstance.t(`errors.${err.message}`);
