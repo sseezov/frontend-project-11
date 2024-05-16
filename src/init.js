@@ -3,7 +3,7 @@ import i18n from 'i18next';
 import resources from '../locales/index.js';
 import locale from '../locales/yupLocale.js';
 import watch from './watchers.js';
-import getRss from './rss.js';
+import getRss, { parseRss } from './rss.js';
 
 export default () => {
   const state = {
@@ -40,6 +40,23 @@ export default () => {
   });
   yup.setLocale(locale);
 
+  const checkRssUpdates = (watchedState, time) => {
+    console.log(777, watchedState.feeds);
+    if (watchedState.feeds.length > 0) {
+      Array.from(watchedState.urls)
+        .map((url, i) => fetch(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`)
+          .then((response) => response.json())
+          .then((data) => {
+            const newPosts = parseRss(data).posts;
+            const postTitles = watchedState.feeds[i].posts.map((post) => post.title);
+            const uniquePosts = newPosts.filter((newPost) => !postTitles.includes(newPost.title));
+            watchedState.feeds[i].posts = [...watchedState.feeds[i].posts, ...uniquePosts];
+          })
+          .catch((e) => console.log(e)));
+    }
+    setTimeout(() => checkRssUpdates(watchedState, time), time);
+  };
+
   const schema = yup.string().url().required();
 
   const loadTranslation = () => {
@@ -56,7 +73,7 @@ export default () => {
 
   elements.form.addEventListener('submit', (e) => {
     e.preventDefault();
-    watchedState.form.value = elements.input.value;
+    watchedState.form.value = elements.input.value.trim();
     schema.notOneOf(state.urls)
       .validate(watchedState.form.value, { abortEarly: false })
       .then((url) => {
@@ -72,4 +89,5 @@ export default () => {
       });
   });
   elements.input.focus();
+  checkRssUpdates(watchedState, 5000);
 };

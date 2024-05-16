@@ -4,7 +4,6 @@ import { renderFeeds } from './rss.js';
 
 export default (elements, state, i18nInstance) => {
   const watchedState = onChange(state, (path, value) => {
-    console.log(77, watchedState);
     switch (path) {
       case 'form.error':
         if (watchedState.form.error) {
@@ -20,7 +19,6 @@ export default (elements, state, i18nInstance) => {
         }
         break;
       case 'feeds':
-        console.log(44, watchedState.feeds);
         renderFeeds(watchedState, elements, i18nInstance);
         break;
       default:

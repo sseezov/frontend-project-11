@@ -1,4 +1,4 @@
-const parseRss = (data) => {
+export const parseRss = (data) => {
   const parser = new DOMParser();
   const parsedData = parser.parseFromString(data.contents, 'application/xml');
   const posts = Array.from(parsedData.querySelectorAll('item')).map((post) => ({
@@ -63,7 +63,7 @@ export const renderFeeds = (watchedState, elements, i18nextInstance) => {
 };
 
 export default (link, i18nextInstance, watchedState) => {
-  fetch(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(link)}`)
+  fetch(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`)
     .then((response) => {
       if (response.ok) return response.json();
       throw new Error('Network response was not ok.');
