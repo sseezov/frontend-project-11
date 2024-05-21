@@ -13,6 +13,7 @@ export default () => {
     },
     urls: new Set(),
     feeds: [],
+    posts: [],
     language: 'en',
   };
 
@@ -41,16 +42,22 @@ export default () => {
   yup.setLocale(locale);
 
   const checkRssUpdates = (watchedState, time) => {
-    console.log(777, watchedState.feeds);
     if (watchedState.feeds.length > 0) {
       Array.from(watchedState.urls)
         .map((url, i) => fetch(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`)
           .then((response) => response.json())
           .then((data) => {
             const newPosts = parseRss(data).posts;
-            const postTitles = watchedState.feeds[i].posts.map((post) => post.title);
+            const postTitles = watchedState.posts[i].posts.map((post) => post.title);
             const uniquePosts = newPosts.filter((newPost) => !postTitles.includes(newPost.title));
-            watchedState.feeds[i].posts = [...watchedState.feeds[i].posts, ...uniquePosts];
+            const updatedPosts = watchedState.posts.map((post, index) => {
+              if (index === i) {
+                return { ...post, posts: [...post.posts, ...uniquePosts] };
+              }
+              return post;
+            });
+            console.log(watchedState, 999);
+            watchedState.posts = updatedPosts;
           })
           .catch((e) => console.log(e)));
     }
@@ -89,5 +96,14 @@ export default () => {
       });
   });
   elements.input.focus();
+
+  elements.input.addEventListener('invalid', (e) => {
+    if (e.target.value.length === 0) {
+      e.target.setCustomValidity(i18nextInstance.t('errors.required'));
+    }
+  });
+  elements.input.addEventListener('input', (e) => {
+    e.target.setCustomValidity('');
+  });
   checkRssUpdates(watchedState, 5000);
 };
