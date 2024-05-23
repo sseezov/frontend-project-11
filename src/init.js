@@ -23,12 +23,18 @@ export default () => {
     feedback: document.querySelector('.feedback'),
     posts: document.querySelector('.posts'),
     feeds: document.querySelector('.feeds'),
+    modal: document.querySelector('.modal'),
+    modalTitle: document.querySelector('.modal-title'),
+    modalBody: document.querySelector('.modal-body'),
+    modalBtnClose: document.querySelector('button[class="btn btn-secondary"]'),
+    modalBtnCloseCross: document.querySelector('button[class="btn-close close"]'),
+    modalBtnReadMore: document.querySelector('.full-article'),
     textNodes: {
       heading: document.querySelector('h1[class="display-3 mb-0"]'),
       subheading: document.querySelector('p[class="lead"]'),
       RSSLink: document.querySelector('label[for="url-input"]'),
       readAllBtn: document.querySelector('a[class="btn btn-primary full-article"]'),
-      closeModalBtn: document.querySelector('button[class="btn btn-secondary"]'),
+      modalBtnClose: document.querySelector('button[class="btn btn-secondary"]'),
       addBtn: document.querySelector('button[class="h-100 btn btn-lg btn-primary px-sm-5"]'),
       example: document.querySelector('p[class="mt-2 mb-0 text-muted"]'),
     },
@@ -44,19 +50,13 @@ export default () => {
   const checkRssUpdates = (watchedState, time) => {
     if (watchedState.feeds.length > 0) {
       Array.from(watchedState.urls)
-        .map((url, i) => fetch(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`)
+        .map((url) => fetch(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`)
           .then((response) => response.json())
           .then((data) => {
-            const newPosts = parseRss(data).posts;
-            const postTitles = watchedState.posts[i].posts.map((post) => post.title);
-            const uniquePosts = newPosts.filter((newPost) => !postTitles.includes(newPost.title));
-            const updatedPosts = watchedState.posts.map((post, index) => {
-              if (index === i) {
-                return { ...post, posts: [...post.posts, ...uniquePosts] };
-              }
-              return post;
-            });
-            console.log(watchedState, 999);
+            const { posts } = parseRss(data);
+            const postTitles = watchedState.posts.map((post) => post.title);
+            const uniquePosts = posts.filter((newPost) => !postTitles.includes(newPost.title));
+            const updatedPosts = watchedState.posts.concat(uniquePosts);
             watchedState.posts = updatedPosts;
           })
           .catch((e) => console.log(e)));

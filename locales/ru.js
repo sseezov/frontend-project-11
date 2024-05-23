@@ -6,7 +6,7 @@ export default {
     add: 'Добавить',
     example: 'Пример: https://lorem-rss.hexlet.app/feed',
     readAllBtn: 'Читать полностью',
-    closeModalBtn: 'Закрыть',
+    modalBtnClose: 'Закрыть',
     addBtn: 'Добавить',
     successfullyLoaded: 'RSS был успешно загружен',
     posts: 'Посты',

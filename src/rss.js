@@ -1,4 +1,4 @@
-let id = 1;
+import _ from "lodash";
 
 export const parseRss = (data) => {
   const parser = new DOMParser();
@@ -6,6 +6,8 @@ export const parseRss = (data) => {
   const posts = Array.from(parsedData.querySelectorAll('item')).map((post) => ({
     title: post.querySelector('title').textContent,
     description: post.querySelector('description').textContent,
+    id: _.uniqueId(),
+    readed: false,
   }));
   const title = parsedData.querySelector('title').textContent;
   const description = parsedData.querySelector('description').textContent;
@@ -23,6 +25,27 @@ const createCard = (i18nextInstance, type) => {
   cardBody.append(cardTitle);
   card.append(cardBody);
   return card;
+};
+
+const setModal = (elements, title, description) => {
+  const {
+    modal,
+    modalTitle,
+    modalBody,
+    modalBtnClose,
+    modalBtnCloseCross,
+  } = elements;
+  modalTitle.textContent = title;
+  modalBody.textContent = description;
+  modal.classList.add('show');
+  modal.style = 'display:block';
+  const closeModal = () => {
+    modal.classList.remove('show');
+    modal.style = '';
+  };
+  [modalBtnClose, modalBtnCloseCross].forEach((elem) => {
+    elem.addEventListener('click', closeModal);
+  });
 };
 
 export const renderFeeds = (watchedState, elements, i18nextInstance) => {
@@ -51,18 +74,40 @@ export const renderFeeds = (watchedState, elements, i18nextInstance) => {
   });
 
   watchedState.posts.forEach((post) => {
-    post.posts.forEach((newPost) => {
-      const li = document.createElement('li');
-      li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
-      const a = document.createElement('a');
-      a.classList.add('fw-bold');
-      a.textContent = newPost.title;
-      const btn = document.createElement('button');
-      btn.classList.add('btn', 'btn-outline-primary', 'btn-sm');
-      btn.textContent = i18nextInstance.t('preview');
-      li.append(a, btn);
-      postsUl.appendChild(li);
-    });
+    const li = document.createElement('li');
+    li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
+    const a = document.createElement('a');
+    post.readed ? a.classList.add('fw-normal', 'link-secondary') : a.classList.add('fw-bold');
+    a.setAttribute('data-id', post.id);
+    a.textContent = post.title;
+    const btn = document.createElement('button');
+    btn.setAttribute('data-id', post.id);
+    btn.classList.add('btn', 'btn-outline-primary', 'btn-sm');
+    btn.textContent = i18nextInstance.t('preview');
+    li.append(a, btn);
+    postsUl.appendChild(li);
+  });
+
+  postsUl.addEventListener('click', (e) => {
+    if (e.target.nodeName === 'BUTTON') {
+      const a = e.target.parentElement.querySelector('a');
+      a.classList.add('fw-normal', 'link-secondary');
+      a.classList.remove('fw-bold');
+      const { id } = a.dataset;
+      watchedState.posts.forEach((post) => {
+        if (post.id === id) {
+          post.readed = true;
+        }
+      });
+
+      const titleText = e.target.parentElement.querySelector('a').textContent;
+      watchedState.posts.forEach((post) => {
+        if (post.title === titleText) {
+          const { title, description } = post;
+          setModal(elements, title, description);
+        }
+      });
+    }
   });
 };
 
@@ -75,9 +120,8 @@ export default (link, i18nextInstance, watchedState) => {
     .then((data) => {
       if (data.status.http_code === 404) throw new Error('noData');
       const { title, description, posts } = parseRss(data);
-      watchedState.feeds.push({ title, description, id });
-      watchedState.posts.push({ posts, id, readed: false });
-      id += 1;
+      watchedState.feeds.push({ title, description });
+      watchedState.posts = watchedState.posts.concat(posts);
     })
     .catch((err) => {
       watchedState.form.error = i18nextInstance.t(`errors.${err.message}`);

@@ -5,7 +5,7 @@ export default {
     RSSLink: 'RSS link',
     example: 'An example: https://hexlet.io/lessons.rss',
     readAllBtn: 'Read more',
-    closeModalBtn: 'Close',
+    modalBtnClose: 'Close',
     successfullyLoaded: 'RSS has been loaded',
     addBtn: 'Add',
     posts: 'Posts',
