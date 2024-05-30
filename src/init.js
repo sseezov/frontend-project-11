@@ -14,7 +14,7 @@ export default () => {
     urls: new Set(),
     feeds: [],
     posts: [],
-    language: 'en',
+    language: 'ru',
   };
 
   const elements = {
@@ -29,6 +29,7 @@ export default () => {
     modalBtnClose: document.querySelector('button[class="btn btn-secondary"]'),
     modalBtnCloseCross: document.querySelector('button[class="btn-close close"]'),
     modalBtnReadMore: document.querySelector('.full-article'),
+    readAllhref: document.querySelector('a[class="btn btn-primary full-article"]'),
     textNodes: {
       heading: document.querySelector('h1[class="display-3 mb-0"]'),
       subheading: document.querySelector('p[class="lead"]'),

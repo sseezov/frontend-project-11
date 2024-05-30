@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from 'lodash';
 
 export const parseRss = (data) => {
   const parser = new DOMParser();
@@ -6,8 +6,8 @@ export const parseRss = (data) => {
   const posts = Array.from(parsedData.querySelectorAll('item')).map((post) => ({
     title: post.querySelector('title').textContent,
     description: post.querySelector('description').textContent,
+    href: post.querySelector('link').textContent,
     id: _.uniqueId(),
-    readed: false,
   }));
   const title = parsedData.querySelector('title').textContent;
   const description = parsedData.querySelector('description').textContent;
@@ -27,13 +27,14 @@ const createCard = (i18nextInstance, type) => {
   return card;
 };
 
-const setModal = (elements, title, description) => {
+const setModal = (elements, title, description, link) => {
   const {
     modal,
     modalTitle,
     modalBody,
     modalBtnClose,
     modalBtnCloseCross,
+    readAllhref,
   } = elements;
   modalTitle.textContent = title;
   modalBody.textContent = description;
@@ -43,6 +44,7 @@ const setModal = (elements, title, description) => {
     modal.classList.remove('show');
     modal.style = '';
   };
+  readAllhref.setAttribute('href', link);
   [modalBtnClose, modalBtnCloseCross].forEach((elem) => {
     elem.addEventListener('click', closeModal);
   });
@@ -103,8 +105,8 @@ export const renderFeeds = (watchedState, elements, i18nextInstance) => {
       const titleText = e.target.parentElement.querySelector('a').textContent;
       watchedState.posts.forEach((post) => {
         if (post.title === titleText) {
-          const { title, description } = post;
-          setModal(elements, title, description);
+          const { title, description, href } = post;
+          setModal(elements, title, description, href);
         }
       });
     }
