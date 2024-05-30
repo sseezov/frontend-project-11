@@ -4,7 +4,6 @@ import { renderFeeds } from './rss.js';
 
 export default (elements, state, i18nInstance) => {
   const watchedState = onChange(state, (path, value) => {
-    console.log(777, path);
     switch (path) {
       case 'form.value':
         elements.input.classList.remove('is-invalid');

@@ -8,7 +8,7 @@ export default {
     readAllBtn: 'Читать полностью',
     modalBtnClose: 'Закрыть',
     addBtn: 'Добавить',
-    successfullyLoaded: 'RSS был успешно загружен',
+    successfullyLoaded: 'RSS успешно загружен',
     posts: 'Посты',
     feeds: 'Фиды',
     preview: 'Просмотр',
