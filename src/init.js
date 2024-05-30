@@ -4,6 +4,7 @@ import resources from '../locales/index.js';
 import locale from '../locales/yupLocale.js';
 import watch from './watchers.js';
 import getRss, { parseRss } from './rss.js';
+
 export default () => {
   const state = {
     form: {
@@ -57,6 +58,7 @@ export default () => {
             const postTitles = watchedState.posts.map((post) => post.title);
             const uniquePosts = posts.filter((newPost) => !postTitles.includes(newPost.title));
             const updatedPosts = watchedState.posts.concat(uniquePosts);
+            // eslint-disable-next-line no-param-reassign
             watchedState.posts = updatedPosts;
           })
           .catch((e) => console.log(e)));
