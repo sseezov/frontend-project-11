@@ -9,7 +9,7 @@ export const parseRss = (data) => {
     href: post.querySelector('link').textContent,
     id: _.uniqueId(),
   }));
-  if (!posts) {
+  if (posts.length === 0) {
     throw new Error('noData');
   }
   const title = parsedData.querySelector('title').textContent;
