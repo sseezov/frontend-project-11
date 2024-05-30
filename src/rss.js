@@ -120,7 +120,6 @@ export default (link, i18nextInstance, watchedState) => {
       throw new Error('Network response was not ok.');
     })
     .then((data) => {
-      if (data.status.http_code === 404) throw new Error('noData');
       const { title, description, posts } = parseRss(data);
       watchedState.feeds.push({ title, description });
       watchedState.posts = watchedState.posts.concat(posts);
