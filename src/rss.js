@@ -9,6 +9,9 @@ export const parseRss = (data) => {
     href: post.querySelector('link').textContent,
     id: _.uniqueId(),
   }));
+  if (!posts) {
+    throw new Error('noData');
+  }
   const title = parsedData.querySelector('title').textContent;
   const description = parsedData.querySelector('description').textContent;
   return { title, description, posts };
