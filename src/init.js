@@ -86,7 +86,6 @@ export default () => {
     schema.notOneOf(state.urls)
       .validate(watchedState.form.value, { abortEarly: false })
       .then((url) => {
-        watchedState.form.error = null;
         watchedState.urls.add(url);
         elements.form.reset();
         elements.input.focus();

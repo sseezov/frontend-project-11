@@ -17,7 +17,7 @@ export default {
       invalid: 'Ссылка должна быть валидным URL',
       alreadyExists: 'RSS уже существует',
       noData: 'Ресурс не содержит валидный RSS',
-      'Failed to fetch': 'Ошибка сети',
+      networkError: 'Ошибка сети',
     },
   },
 };

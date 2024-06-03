@@ -123,12 +123,13 @@ export default (link, i18nextInstance, watchedState) => {
   fetch(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`)
     .then((response) => {
       if (response.ok) return response.json();
-      throw new Error('Network response was not ok.');
+      throw new Error('networkError');
     })
     .then((data) => {
       const { title, description, posts } = parseRss(data);
       watchedState.feeds.push({ title, description });
       watchedState.posts = watchedState.posts.concat(posts);
+      watchedState.form.error = null;
     })
     .catch((err) => {
       watchedState.form.error = i18nextInstance.t(`errors.${err.message}`);

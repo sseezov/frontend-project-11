@@ -3,10 +3,10 @@ import onChange from 'on-change';
 import { renderFeeds } from './rss.js';
 
 export default (elements, state, i18nInstance) => {
-  const watchedState = onChange(state, (path, value) => {
+  const watchedState = onChange(state, (path, error) => {
     switch (path) {
       case 'form.error':
-        if (value) {
+        if (error) {
           elements.input.classList.add('is-invalid');
           elements.feedback.textContent = watchedState.form.error;
           elements.feedback.classList.remove('text-success');
@@ -23,7 +23,7 @@ export default (elements, state, i18nInstance) => {
         renderFeeds(watchedState, elements, i18nInstance);
         break;
       default:
-        console.log(`invalid data: \n path: ${path} value: ${value}`);
+        console.log(`invalid data: \n path: ${path} value: ${error}`);
     }
   });
   return watchedState;
