@@ -48,7 +48,7 @@ export default () => {
   });
   yup.setLocale(locale);
 
-  const checkRssUpdates = (watchedState, time) => {
+  const checkRssUpdates = (watchedState, time = 5000) => {
     if (watchedState.feeds.length > 0) {
       Array.from(watchedState.urls)
         .map((url) => fetch(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`)
@@ -86,7 +86,7 @@ export default () => {
     schema.notOneOf(state.urls)
       .validate(watchedState.form.value, { abortEarly: false })
       .then((url) => {
-        watchedState.form.error = '';
+        watchedState.form.error = null;
         watchedState.urls.add(url);
         elements.form.reset();
         elements.input.focus();
