@@ -8,8 +8,8 @@ import getRss, { parseRss } from './rss.js';
 export default () => {
   const state = {
     form: {
-      value: '',
-      error: '',
+      value: null,
+      error: 'init',
     },
     urls: new Set(),
     feeds: [],
