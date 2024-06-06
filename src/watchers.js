@@ -23,7 +23,6 @@ export default (elements, state, i18nInstance) => {
         renderFeeds(watchedState, elements, i18nInstance);
         break;
       default:
-        console.log(`invalid data: \n path: ${path} value: ${error}`);
     }
   });
   return watchedState;

@@ -40,33 +40,33 @@ export default () => {
       example: document.querySelector('p[class="mt-2 mb-0 text-muted"]'),
     },
   };
+  elements.input.focus();
 
   const i18nextInstance = i18n.createInstance();
   i18nextInstance.init({
     lng: state.language,
     resources,
   });
-  yup.setLocale(locale);
+  const watchedState = watch(elements, state, i18nextInstance);
 
-  const checkRssUpdates = (watchedState, time = 5000) => {
-    if (watchedState.feeds.length > 0) {
-      Array.from(watchedState.urls)
+  const checkRssUpdates = (appState, time = 5000) => {
+    if (appState.feeds.length > 0) {
+      Array.from(appState.urls)
         .map((url) => fetch(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`)
           .then((response) => response.json())
           .then((data) => {
             const { posts } = parseRss(data);
-            const postTitles = watchedState.posts.map((post) => post.title);
+            const postTitles = appState.posts.map((post) => post.title);
             const uniquePosts = posts.filter((newPost) => !postTitles.includes(newPost.title));
-            const updatedPosts = watchedState.posts.concat(uniquePosts);
+            const updatedPosts = appState.posts.concat(uniquePosts);
             // eslint-disable-next-line no-param-reassign
-            watchedState.posts = updatedPosts;
+            appState.posts = updatedPosts;
           })
           .catch((e) => console.log(e)));
     }
     setTimeout(() => checkRssUpdates(watchedState, time), time);
   };
-
-  const schema = yup.string().url().required();
+  checkRssUpdates(watchedState, 5000);
 
   const loadTranslation = () => {
     Object.keys(elements.textNodes)
@@ -75,10 +75,10 @@ export default () => {
           .textContent = i18nextInstance.t(nodeName);
       });
   };
-
   loadTranslation();
 
-  const watchedState = watch(elements, state, i18nextInstance);
+  yup.setLocale(locale);
+  const schema = yup.string().url().required();
 
   elements.form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -96,7 +96,6 @@ export default () => {
         [watchedState.form.error] = messages;
       });
   });
-  elements.input.focus();
 
   elements.input.addEventListener('invalid', (e) => {
     if (e.target.value.length === 0) {
@@ -106,5 +105,4 @@ export default () => {
   elements.input.addEventListener('input', (e) => {
     e.target.setCustomValidity('');
   });
-  checkRssUpdates(watchedState, 5000);
 };
