@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import onChange from 'on-change';
-import { renderFeeds } from './rss.js';
+import { renderFeeds, renderPosts } from './elementsHandlers.js';
 
 export default (elements, state, i18nInstance) => {
   const watchedState = onChange(state, (path, error) => {
@@ -21,6 +21,7 @@ export default (elements, state, i18nInstance) => {
         }
       case 'posts':
         renderFeeds(watchedState, elements, i18nInstance);
+        renderPosts(watchedState, elements, i18nInstance);
         break;
       default:
     }

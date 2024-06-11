@@ -2,7 +2,7 @@ import * as yup from 'yup';
 import i18n from 'i18next';
 import resources from '../locales/index.js';
 import locale from '../locales/yupLocale.js';
-import watch from './watchers.js';
+import watch from './watcher.js';
 import getRss, { parseRss } from './rss.js';
 
 export default () => {
